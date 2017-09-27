@@ -12,11 +12,11 @@ function isFile (value) {
   return value instanceof File
 }
 
-function makeArrayKey (key) {
+function makeArrayKey (key, index) {
   if (key.length > 2 && key.lastIndexOf('[]') === key.length - 2) {
     return key
   } else {
-    return key + '[]'
+    return key + '[' + index + ']'
   }
 }
 
@@ -29,8 +29,8 @@ function objectToFormData (obj, fd, pre) {
     if (isObject(obj[prop]) && !isArray(obj[prop]) && !isFile(obj[prop])) {
       objectToFormData(obj[prop], fd, key)
     } else if (isArray(obj[prop])) {
-      obj[prop].forEach(function (value) {
-        var arrayKey = makeArrayKey(key)
+      obj[prop].forEach(function (value, index) {
+        var arrayKey = makeArrayKey(key, index)
 
         if (isObject(value) && !isFile(value)) {
           objectToFormData(value, fd, arrayKey)
